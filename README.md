@@ -21,6 +21,18 @@ npm run dev
 
 Для публикации на хостинге с прямыми ссылками вида `/courses/pro` нужен fallback на `index.html`.
 
+## Cloudflare Pages
+
+Настройки деплоя:
+
+```bash
+Build command: npm run build
+Build output directory: dist
+Root directory: /
+```
+
+Файл `public/_redirects` уже добавлен, чтобы все внутренние страницы React открывались напрямую.
+
 ## Оплата
 
 По умолчанию форма создаёт демо-счёт в браузере. Для реального провайдера добавьте `.env`:
