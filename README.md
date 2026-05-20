@@ -7,10 +7,10 @@ React/Vite сайт для продажи мастер-классов по ба�
 - `/` - главная
 - `/courses` - каталог мастер-классов
 - `/courses/start`, `/courses/pro`, `/courses/service` - отдельные страницы форматов
-- `/club`, `/experts`, `/reviews`, `/blog`, `/contacts` - информационные вкладки
-- `/blog/interview-restaurant` и другие `/blog/:slug` - отдельные страницы статей
+- `/club`, `/reviews`, `/contacts` - информационные вкладки
 - `/question` - форма обратной связи
 - `/checkout` - запись и оплата
+- `/terms`, `/privacy`, `/consent`, `/consent-spread`, `/consent-mailing` - юридические документы
 
 ## Запуск
 

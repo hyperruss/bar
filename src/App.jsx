@@ -3,31 +3,37 @@ import {
   ArrowLeft,
   ArrowRight,
   BriefcaseBusiness,
-  CalendarDays,
   Check,
   ChevronDown,
   CreditCard,
   Menu,
   MessageCircle,
-  Newspaper,
   Send,
   ShieldCheck,
   Star,
-  UserRound,
   X,
 } from 'lucide-react';
 
 const accountUrl = 'https://app.barmenschool.site/login';
 const paymentEndpoint = import.meta.env.VITE_PAYMENT_ENDPOINT || '';
+const legalInfo = {
+  orgName: 'ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ ГОЛЕВА ДИАНА АЛЕКСАНДРОВНА',
+  inn: '590850694160',
+  ogrnip: '324595800127571',
+  email: 'укажите юридический e-mail',
+  phone: 'укажите телефон',
+  address: 'укажите адрес или регион ведения деятельности',
+};
 
 const courses = [
   {
     id: 'start',
     title: 'Барный старт',
     badge: 'Первый формат',
-    price: 24900,
-    duration: '14 встреч',
-    lessons: 'информационные материалы',
+    oldPrice: 49990,
+    price: 39990,
+    duration: '5 очных мастер классов',
+    lessons: 'очные встречи + видеоматериалы',
     description:
       'Знакомство с барной стойкой, классическими коктейлями, гостевым сервисом и рабочим ритмом.',
     details:
@@ -38,9 +44,9 @@ const courses = [
     id: 'pro',
     title: 'Миксология PRO',
     badge: 'Для роста',
-    price: 39900,
-    duration: '21 день',
-    lessons: 'живые сессии',
+    price: 59990,
+    duration: '10 очных мастер классов',
+    lessons: 'очные встречи + видеоматериалы + барный набор',
     description:
       'Авторские вкусы, премиальный алкоголь, фудпейринг, себестоимость и подача для сильного портфолио.',
     details:
@@ -60,177 +66,93 @@ const courses = [
       'Консультационный формат для сотрудников зала и бара: коммуникация, апсейл, сервисные стандарты, сложные гости и собеседование.',
     highlights: ['Этикет и апсейл', 'Работа с гостем', 'Резюме и собеседование'],
   },
-];
-
-const experts = [
-  ['Илья Морозов', 'шеф-бармен', '12 лет за стойкой, запускал барные карты для ресторанов Москвы.'],
-  ['Анна Лебедева', 'миксолог', 'Специализация: вкусовые пары, кордиалы, инфьюзы и авторские подачи.'],
-  ['Марк Соловьёв', 'HoReCa тренер', 'Отвечает за сервис, продажи и подготовку к первым собеседованиям.'],
+  {
+    id: 'waiter',
+    title: 'Официант',
+    badge: 'Сервис зала',
+    price: 29990,
+    duration: '4 очных мастер-класса',
+    lessons: 'видеоматериалы',
+    description:
+      'Гостевой сервис, работа с меню, подача блюд и напитков, коммуникация с гостем и командой.',
+    details:
+      'Формат для тех, кто хочет уверенно чувствовать себя в зале: встреча гостя, знание меню, рекомендации без давления, работа с заказом, чек-лист смены и спокойное завершение визита.',
+    highlights: ['Работа с меню и заказом', 'Коммуникация с гостем', 'Сервисные ситуации'],
+  },
 ];
 
 const reviews = [
   {
     name: 'Александр М.',
     role: 'участник встреч',
-    text: 'За две недели разобрался в базовой логике стойки, стал увереннее говорить с гостями и понимать рабочий ритм бара.',
+    date: '18 июня 2025',
+    text: 'Понравилось, что стойку показали без лишней романтики: порядок, подготовка, чистые движения и спокойная голова в темпе.',
+  },
+  {
+    name: 'Никита Р.',
+    role: 'участник барного старта',
+    date: '29 июля 2025',
+    text: 'До этого путался в инвентаре и очередности действий. После встреч стало понятно, как собрать рабочую зону и не суетиться.',
   },
   {
     name: 'Екатерина В.',
-    role: 'бар-менеджер',
-    text: 'Понравилось, что говорят не только о рецептах, а о логике вкуса, себестоимости и разговоре с гостем.',
+    role: 'участница формата PRO',
+    date: '12 августа 2025',
+    text: 'Очень зашёл разбор вкуса: почему один коктейль выглядит собранным, а другой разваливается, хотя ингредиенты похожие.',
+  },
+  {
+    name: 'Алина Т.',
+    role: 'участница встреч по сервису',
+    date: '7 сентября 2025',
+    text: 'Стало проще говорить с гостем. Не заученные фразы, а нормальная логика: услышать запрос, предложить вариант и не давить.',
+  },
+  {
+    name: 'Роман Г.',
+    role: 'участник формата PRO',
+    date: '3 октября 2025',
+    text: 'Отдельно полезен блок про себестоимость. Я впервые посмотрел на напиток не только как на вкус, но и как на позицию в карте.',
   },
   {
     name: 'Дмитрий К.',
-    role: 'шеф-бармен',
-    text: 'PRO-формат помог пересобрать карту и увереннее презентовать авторские коктейли владельцу проекта.',
-  },
-];
-
-const posts = [
-  {
-    slug: 'interview-restaurant',
-    title: 'Собеседование в ресторан: как произвести впечатление',
-    excerpt:
-      'Подготовка, внешний вид, речь, вопросы работодателю и мини-скрипты для уверенной встречи.',
-    category: 'Карьера',
-    date: '13.11.2025',
-    readTime: '6 минут',
-    intro:
-      'Собеседование в ресторанной индустрии редко похоже на формальную офисную встречу. Работодатель смотрит не только на опыт, но и на аккуратность, живость, темп речи и способность держать контакт.',
-    sections: [
-      [
-        'Подготовьте короткую историю о себе',
-        'Соберите ответ на одну минуту: какой у вас опыт, почему интересен бар или сервис, чему уже учились и какой график вам подходит. Чем конкретнее ответ, тем увереннее вы звучите.',
-      ],
-      [
-        'Покажите понимание заведения',
-        'Перед встречей посмотрите меню, атмосферу, средний чек и отзывы. Хороший вопрос о барной карте или сервисе сразу показывает, что вы пришли не случайно.',
-      ],
-      [
-        'Спросите о вводе в команду и стандартах',
-        'Уточните, сколько длится ввод, кто сопровождает новичков, как оценивают первую смену и какие ожидания есть у команды.',
-      ],
-    ],
+    role: 'бар-менеджер',
+    date: '22 ноября 2025',
+    text: 'Взял несколько идей для карты и пересобрал подачу напитков так, чтобы команде было проще держать единый стандарт.',
   },
   {
-    slug: 'bartender-roadmap',
-    title: 'Как начать за барной стойкой: дорожная карта',
-    excerpt: 'Первые шаги в барной индустрии: база, живые встречи, резюме и первые смены.',
-    category: 'Карьера',
-    date: '13.11.2025',
-    readTime: '7 минут',
-    intro:
-      'Путь за барную стойку начинается не с эффектных трюков, а с дисциплины рабочей зоны, классики, скорости и спокойной коммуникации с гостем.',
-    sections: [
-      [
-        'Освойте базу до авторских напитков',
-        'Сначала инвентарь, лёд, стекло, баланс кислого и сладкого, классические коктейли. Авторские рецепты становятся понятнее, когда есть фундамент.',
-      ],
-      [
-        'Разбирайте рабочий темп',
-        'Важно не просто знать рецепты, а понимать последовательность: подготовка, сборка, порядок на станции и параллельная коммуникация с гостем.',
-      ],
-      [
-        'Выбирайте место с обратной связью',
-        'Узнайте, кто помогает новичкам на первых сменах, какие задачи дают в начале и как команда оценивает аккуратность работы.',
-      ],
-    ],
+    name: 'Полина Н.',
+    role: 'участница формата официанта',
+    date: '16 декабря 2025',
+    text: 'Больше всего помогла часть про меню и подачу. Теперь понимаю, как уверенно вести стол и не теряться в уточнениях.',
   },
   {
-    slug: 'latte-art-start',
-    title: 'Латте-арт с нуля: техники для начинающего бариста',
-    excerpt: 'От текстуры молока до первых рисунков, стабильной пены и чистой подачи.',
-    category: 'Бариста',
-    date: '13.11.2025',
-    readTime: '5 минут',
-    intro:
-      'Латте-арт начинается с текстуры молока. Красивый рисунок невозможен без стабильной эмульсии, правильного угла питчера и чистого эспрессо.',
-    sections: [
-      [
-        'Следите за температурой',
-        'Перегретое молоко теряет сладость и пластичность. Учитесь останавливать нагрев до момента, когда питчер становится горячим, но ещё комфортно контролируемым.',
-      ],
-      [
-        'Тренируйте базовую розетту',
-        'Не гонитесь за сложными фигурами. Стабильное сердце и розетта быстрее дадут понимание потока, высоты и скорости вливания.',
-      ],
-      [
-        'Разбирайте ошибки сразу',
-        'Пузыри, жидкая пена, провал рисунка или слишком бледная чашка говорят о конкретных ошибках техники. Исправляйте один параметр за раз.',
-      ],
-    ],
+    name: 'Сергей Л.',
+    role: 'участник встреч',
+    date: '21 января 2026',
+    text: 'Формат живой: много конкретики, реальные ситуации из смены, без ощущения, что тебе читают сухой регламент.',
   },
   {
-    slug: 'classic-cocktails-top',
-    title: 'Топ-10 классических коктейлей, которые должен знать бармен',
-    excerpt: 'От Negroni до Old Fashioned: ключевые рецепты, техники и логика баланса.',
-    category: 'Коктейли',
-    date: '13.11.2025',
-    readTime: '8 минут',
-    intro:
-      'Классика даёт бармену общий язык индустрии. Через неё проще понять баланс, крепость, разбавление, аромат и то, почему гости возвращаются к знакомым вкусам.',
-    sections: [
-      [
-        'Начните с Old Fashioned, Daiquiri и Negroni',
-        'Эта тройка показывает три разные логики: крепкий напиток в стакане для смешивания, кислый напиток в шейкере и горько-сладкий аперитив. Они помогают увидеть точность в работе с балансом.',
-      ],
-      [
-        'Запоминайте не только граммовки',
-        'Важно понимать, какую роль играет каждый ингредиент. Тогда вы сможете адаптировать напиток под бренд алкоголя, лёд и запрос гостя.',
-      ],
-      [
-        'Повторяйте подачу',
-        'Одинаковый вкус без одинаковой подачи не воспринимается аккуратно. Стекло, гарнир, температура и чистота края бокала имеют значение.',
-      ],
-    ],
+    name: 'Мария С.',
+    role: 'участница встреч по сервису',
+    date: '14 февраля 2026',
+    text: 'Самым полезным оказался разбор разговора с гостем: как предлагать варианты и не звучать навязчиво.',
   },
   {
-    slug: 'tips-service-habits',
-    title: 'Как увеличить чаевые: сервисные привычки официантов',
-    excerpt: 'Коммуникация, темп, забота о госте и детали, которые повышают лояльность.',
-    category: 'Сервис',
-    date: '13.11.2025',
-    readTime: '6 минут',
-    intro:
-      'Чаевые растут не от навязчивости, а от ощущения, что гостя заметили. Хороший сервис точен, спокоен и предугадывает маленькие неудобства.',
-    sections: [
-      [
-        'Держите ритм стола',
-        'Своевременная вода, чистые приборы и короткие проверки важнее длинных разговоров. Гость должен чувствовать внимание, но не давление.',
-      ],
-      [
-        'Предлагайте конкретно',
-        'Фраза “могу посоветовать” слабее, чем два точных варианта под настроение гостя. Конкретика экономит время и повышает доверие.',
-      ],
-      [
-        'Завершайте визит аккуратно',
-        'Последний контакт влияет на память о заведении. Проверьте чек, поблагодарите и оставьте ощущение лёгкости.',
-      ],
-    ],
+    name: 'Владислав Е.',
+    role: 'участник барного старта',
+    date: '5 марта 2026',
+    text: 'Понравилось, что ошибки разбирают спокойно. После этого не страшно брать шейкер в руки и пробовать ещё раз.',
   },
   {
-    slug: 'espresso-beginner-mistakes',
-    title: '5 ошибок начинающего бармена при работе с эспрессо',
-    excerpt: 'Помол, пролив, трамбовка, чистота станции и вкус напитка без случайностей.',
-    category: 'Эспрессо',
-    date: '13.11.2025',
-    readTime: '5 минут',
-    intro:
-      'Эспрессо не про магию, а про повторяемость. Маленькая ошибка в помоле, дозировке или чистоте быстро превращается в горечь, кислотность или водянистый вкус.',
-    sections: [
-      [
-        'Не игнорируйте помол',
-        'Если пролив слишком быстрый или слишком медленный, первым делом проверяйте помол и дозу. Это базовая настройка вкуса.',
-      ],
-      [
-        'Следите за чистотой группы',
-        'Старые масла и остатки кофе портят даже хорошее зерно. Чистая станция заметна во вкусе и скорости работы.',
-      ],
-      [
-        'Фиксируйте удачный рецепт',
-        'Записывайте дозу, выход, время и вкус. Так вы быстрее поймёте, что именно изменилось после корректировки.',
-      ],
-    ],
+    name: 'Илья П.',
+    role: 'участник барного старта',
+    date: '9 апреля 2026',
+    text: 'До встреч бар казался хаосом. Сейчас понимаю логику станции, подготовку и то, как не теряться во время смены.',
+  },
+  {
+    name: 'Ольга Б.',
+    role: 'управляющая кафе',
+    date: '24 апреля 2026',
+    text: 'Брала формат для команды зала. Ребята стали увереннее общаться с гостями и лучше понимать, где бар и сервис пересекаются.',
   },
 ];
 
@@ -244,9 +166,7 @@ const navItems = [
   ['Главная', '/'],
   ['Мастер-классы', '/courses'],
   ['О клубе', '/club'],
-  ['Консультанты', '/experts'],
   ['Отзывы', '/reviews'],
-  ['Блог', '/blog'],
   ['Контакты', '/contacts'],
 ];
 
@@ -258,29 +178,36 @@ function formatPrice(value) {
   }).format(value);
 }
 
+function PriceView({ course }) {
+  return (
+    <span className="price-view">
+      {course.oldPrice && <s>{formatPrice(course.oldPrice)}</s>}
+      <strong>{formatPrice(course.price)}</strong>
+    </span>
+  );
+}
+
 function getRoute() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
   const courseMatch = path.match(/^\/courses\/([^/]+)$/);
-  const postMatch = path.match(/^\/blog\/([^/]+)$/);
 
   if (courseMatch) {
     return { page: 'course', courseId: courseMatch[1], path };
-  }
-
-  if (postMatch) {
-    return { page: 'post', postSlug: postMatch[1], path };
   }
 
   const pageByPath = {
     '/': 'home',
     '/courses': 'courses',
     '/club': 'club',
-    '/experts': 'experts',
     '/reviews': 'reviews',
-    '/blog': 'blog',
     '/contacts': 'contacts',
     '/question': 'question',
     '/checkout': 'checkout',
+    '/terms': 'terms',
+    '/privacy': 'privacy',
+    '/consent': 'consent',
+    '/consent-spread': 'consentSpread',
+    '/consent-mailing': 'consentMailing',
   };
 
   return { page: pageByPath[path] || 'home', path };
@@ -297,7 +224,9 @@ function App() {
     phone: '',
     email: '',
     promo: '',
-    consent: true,
+    offerAccepted: false,
+    privacyAccepted: false,
+    personalDataAccepted: false,
   });
 
   const selectedCourse = useMemo(
@@ -308,11 +237,6 @@ function App() {
   const activeCourse = useMemo(
     () => courses.find((course) => course.id === route.courseId) || courses[0],
     [route.courseId],
-  );
-
-  const activePost = useMemo(
-    () => posts.find((post) => post.slug === route.postSlug) || posts[0],
-    [route.postSlug],
   );
 
   const discount = form.promo.trim().toUpperCase() === 'GOLD10' ? 0.1 : 0;
@@ -348,10 +272,17 @@ function App() {
   const submitPayment = async (event) => {
     event.preventDefault();
 
-    if (!form.name || !form.phone || !form.email || !form.consent) {
+    if (
+      !form.name ||
+      !form.phone ||
+      !form.email ||
+      !form.offerAccepted ||
+      !form.privacyAccepted ||
+      !form.personalDataAccepted
+    ) {
       setStatus({
         type: 'error',
-        message: 'Заполните имя, телефон, email и подтвердите согласие с условиями.',
+        message: 'Заполните имя, телефон, email и отметьте согласия с документами.',
       });
       return;
     }
@@ -430,16 +361,14 @@ function App() {
           <CourseDetail course={activeCourse} navigate={navigate} chooseCourse={chooseCourse} />
         )}
         {route.page === 'club' && <ClubPage navigate={navigate} />}
-        {route.page === 'experts' && <ExpertsPage />}
         {route.page === 'reviews' && <ReviewsPage />}
-        {route.page === 'blog' && <BlogPage navigate={navigate} />}
-        {route.page === 'post' && <BlogArticle post={activePost} navigate={navigate} />}
         {route.page === 'contacts' && <ContactsPage navigate={navigate} />}
-        {route.page === 'question' && <QuestionPage />}
+        {route.page === 'question' && <QuestionPage navigate={navigate} />}
         {route.page === 'checkout' && (
           <CheckoutPage
             discount={discount}
             form={form}
+            navigate={navigate}
             paymentMethod={paymentMethod}
             selectedCourse={selectedCourse}
             selectedCourseId={selectedCourseId}
@@ -451,6 +380,11 @@ function App() {
             updateForm={updateForm}
           />
         )}
+        {route.page === 'terms' && <LegalPage type="terms" navigate={navigate} />}
+        {route.page === 'privacy' && <LegalPage type="privacy" navigate={navigate} />}
+        {route.page === 'consent' && <LegalPage type="consent" navigate={navigate} />}
+        {route.page === 'consentSpread' && <LegalPage type="consentSpread" navigate={navigate} />}
+        {route.page === 'consentMailing' && <LegalPage type="consentMailing" navigate={navigate} />}
       </main>
 
       <Footer navigate={navigate} />
@@ -563,8 +497,8 @@ function HomePage({ navigate, chooseCourse }) {
           <img src={imageUrls.oldFashioned} alt="Old Fashioned на барной стойке" />
         </div>
         <div className="champagne-card reveal-up">
-          <span className="eyebrow dark">craft, speed and service</span>
-          <h2>Консультанты из действующих баров</h2>
+          <span className="eyebrow dark">вкус, темп и сервис</span>
+          <h2>Приглашённые гости из действующих баров</h2>
           <p>
             Содержание обновляется под реальные требования заведений: от mise en place до
             коммуникации с гостем и контроля себестоимости.
@@ -594,7 +528,9 @@ function CoursesPage({ navigate, chooseCourse }) {
               <div className="course-price-box">
                 <span>Длительность: <strong>{course.duration}</strong></span>
                 <span>Формат: <strong>{course.lessons}</strong></span>
-                <span>Стоимость: <strong>{formatPrice(course.price)}</strong></span>
+                <span>
+                  Стоимость: <PriceView course={course} />
+                </span>
               </div>
               <div className="course-actions">
                 <button className="secondary-button" type="button" onClick={() => navigate(`/courses/${course.id}`)}>
@@ -641,8 +577,8 @@ function CourseDetail({ course, navigate, chooseCourse }) {
             <button className="primary-button" type="button" onClick={() => chooseCourse(course.id)}>
               Записаться и оплатить
             </button>
-            <button className="secondary-button" type="button" onClick={() => navigate('/experts')}>
-              Посмотреть консультантов
+            <button className="secondary-button" type="button" onClick={() => navigate('/question')}>
+              Задать вопрос
             </button>
           </div>
         </div>
@@ -661,7 +597,9 @@ function CourseDetail({ course, navigate, chooseCourse }) {
             </div>
             <div>
               <dt>Стоимость</dt>
-              <dd>{formatPrice(course.price)}</dd>
+              <dd>
+                <PriceView course={course} />
+              </dd>
             </div>
           </dl>
         </aside>
@@ -674,48 +612,119 @@ function ClubPage({ navigate }) {
   return (
     <section className="page-shell">
       <PageHero
-        eyebrow="club"
+        eyebrow="клуб"
         title="О клубе"
-        text="Gold Pour работает как барное пространство: небольшие группы, живые станции, консультанты из индустрии и понятный разговор о первых сменах."
+        text="Gold Pour — барное пространство про стойку, сервис, вкус и рабочую культуру ресторанной индустрии. Мы собираем людей, которым важно не просто повторить рецепт, а понять логику бара, поведение гостя и ритм живой смены."
       />
       <div className="feature-collage inner-collage">
         <div className="image-panel">
           <img src={imageUrls.bar} alt="Барный зал для встреч" />
         </div>
         <div className="champagne-card">
-          <span className="eyebrow dark">practice first</span>
-          <h2>80% встречи проходит за стойкой</h2>
+          <span className="eyebrow dark">живой формат</span>
+          <h2>Большая часть встречи проходит за стойкой</h2>
           <p>
-            Внутри: mise en place, скорость, сервис, разбор ошибок, финальная смена и помощь с
-            резюме. Это не лекция про бар, а тренировка будущей работы.
+            Внутри: mise en place, темп, сервис, разбор типовых ошибок, гостевая смена и помощь с
+            резюме. Мы показываем, как бар живёт изнутри: от подготовки станции до разговора с
+            гостем.
           </p>
           <button className="dark-button" type="button" onClick={() => navigate('/courses')}>
             Смотреть форматы
           </button>
         </div>
       </div>
-    </section>
-  );
-}
 
-function ExpertsPage() {
-  return (
-    <section className="page-shell">
-      <PageHero
-        eyebrow="experts"
-        title="Консультанты"
-        text="Консультанты не оторваны от рынка: они работают в барах, запускают меню и знают, что ждут работодатели."
-      />
-      <div className="course-grid">
-        {experts.map(([name, role, text]) => (
-          <article className="course-card expert-card" key={name}>
-            <UserRound size={28} />
-            <h3>{name}</h3>
-            <span>{role}</span>
-            <p>{text}</p>
-          </article>
-        ))}
+      <section className="club-story">
+        <div className="club-story-copy">
+          <span className="eyebrow">что мы делаем</span>
+          <h2>Помогаем увидеть бар как систему, а не набор случайных действий</h2>
+          <p>
+            В Gold Pour разбирают не только коктейли. Мы говорим о том, как подготовить рабочее
+            место, держать чистый темп, читать запрос гостя, работать с меню, сохранять сервис в
+            загруженный вечер и понимать, почему команда действует именно так.
+          </p>
+          <p>
+            Форматы подходят тем, кто только присматривается к барной сфере, уже выходит в первые
+            смены, работает в зале или хочет собрать более уверенную подачу для своего заведения.
+            Встречи проходят в спокойной атмосфере: без давления, но с вниманием к деталям.
+          </p>
+        </div>
+        <div className="club-story-panel">
+          <h3>Внутри клуба</h3>
+          <ul>
+            <li>разбор реальных ситуаций за стойкой и в зале</li>
+            <li>работа с классикой, авторскими вкусами и подачей</li>
+            <li>гостевой сервис, речь, рекомендации и сложные диалоги</li>
+            <li>подготовка станции, чек-листы и порядок действий</li>
+            <li>обратная связь по технике, темпу и уверенности</li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="club-grid">
+        <article>
+          <span>01</span>
+          <h3>Камерные группы</h3>
+          <p>
+            Мы не собираем поток ради количества. Небольшой состав позволяет спокойно разобрать
+            вопросы каждого участника и уделить внимание деталям за стойкой.
+          </p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Реальные барные сценарии</h3>
+          <p>
+            Разбираем подготовку рабочей зоны, коммуникацию с гостем, ритм вечера, подачу напитков,
+            работу с меню и ситуации, которые встречаются в заведениях каждый день.
+          </p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Фокус на сервисе</h3>
+          <p>
+            Бар и зал работают вместе, поэтому мы говорим не только о напитках, но и о гостевом
+            опыте: встреча, рекомендация, внимание к деталям и аккуратное завершение визита.
+          </p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Полезная обратная связь</h3>
+          <p>
+            После встречи участник понимает, какие действия уже выглядят уверенно, а что стоит
+            подтянуть перед первой или следующей сменой.
+          </p>
+        </article>
       </div>
+
+      <section className="club-principles">
+        <div>
+          <span className="eyebrow">подход</span>
+          <h2>Уважение к профессии и гостю</h2>
+        </div>
+        <div className="principle-list">
+          <article>
+            <strong>Сначала логика</strong>
+            <p>
+              Мы объясняем, зачем выполняется действие: почему важен порядок, как рождается вкус,
+              где сервис помогает продаже и почему чистая станция экономит силы.
+            </p>
+          </article>
+          <article>
+            <strong>Потом уверенность</strong>
+            <p>
+              Участник пробует, задаёт вопросы, получает корректировку и уходит с понятным
+              маршрутом: что закрепить, что повторить и на что смотреть в смене.
+            </p>
+          </article>
+          <article>
+            <strong>Всегда про реальность</strong>
+            <p>
+              Мы не строим идеальную картинку ради красивых слов. В центре — бар, зал, гости,
+              команда, вечерний темп и решения, которые работают в заведении.
+            </p>
+          </article>
+        </div>
+      </section>
     </section>
   );
 }
@@ -724,7 +733,7 @@ function ReviewsPage() {
   return (
     <section className="page-shell">
       <PageHero
-        eyebrow="reviews"
+        eyebrow="отзывы"
         title="Отзывы участников"
         text="Короткие истории о том, как встречи помогают увереннее смотреть на барную стойку."
       />
@@ -739,6 +748,7 @@ function ReviewsPage() {
             <p>{review.text}</p>
             <strong>{review.name}</strong>
             <span>{review.role}</span>
+            <small>{review.date}</small>
           </article>
         ))}
       </div>
@@ -746,122 +756,7 @@ function ReviewsPage() {
   );
 }
 
-function BlogPage({ navigate }) {
-  return (
-    <section className="page-shell blog-page-shell">
-      <PageHero
-        eyebrow="blog"
-        title="Блог"
-        text="Полезные статьи и новости из мира барного искусства, сервиса и карьерного роста в HoReCa."
-      />
-      <div className="blog-grid">
-        {posts.map((post, index) => (
-          <article
-            className={`blog-card reveal-up delay-${index % 3}`}
-            key={post.title}
-            onClick={() => navigate(`/blog/${post.slug}`)}
-          >
-            <span className="blog-category">{post.category}</span>
-            <h2>{post.title}</h2>
-            <p>{post.excerpt}</p>
-            <div className="blog-meta">
-              <span>
-                <UserRound size={16} /> Gold Pour
-              </span>
-              <span>
-                <CalendarDays size={16} /> {post.date}
-              </span>
-            </div>
-            <button
-              className="blog-button"
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                navigate(`/blog/${post.slug}`);
-              }}
-            >
-              <Newspaper size={17} />
-              Читать
-            </button>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function BlogArticle({ post, navigate }) {
-  const relatedPosts = posts.filter((item) => item.slug !== post.slug).slice(0, 3);
-
-  return (
-    <section className="page-shell article-shell">
-      <button className="back-button" type="button" onClick={() => navigate('/blog')}>
-        <ArrowLeft size={18} /> Все статьи
-      </button>
-
-      <article className="article-layout">
-        <header className="article-hero reveal-up">
-          <span className="blog-category">{post.category}</span>
-          <h1>{post.title}</h1>
-          <p>{post.intro}</p>
-          <div className="blog-meta article-meta">
-            <span>
-              <UserRound size={16} /> Gold Pour
-            </span>
-            <span>
-              <CalendarDays size={16} /> {post.date}
-            </span>
-            <span>
-              <Newspaper size={16} /> {post.readTime}
-            </span>
-          </div>
-        </header>
-
-        <div className="article-body">
-          {post.sections.map(([heading, text]) => (
-            <section className="article-section" key={heading}>
-              <h2>{heading}</h2>
-              <p>{text}</p>
-            </section>
-          ))}
-
-        </div>
-      </article>
-
-      <aside className="related-posts">
-        <div className="section-heading">
-          <span className="eyebrow">читайте также</span>
-          <h2>Похожие статьи</h2>
-        </div>
-        <div className="blog-grid related-grid">
-          {relatedPosts.map((related) => (
-            <article
-              className="blog-card compact-blog-card"
-              key={related.slug}
-              onClick={() => navigate(`/blog/${related.slug}`)}
-            >
-              <span className="blog-category">{related.category}</span>
-              <h2>{related.title}</h2>
-              <p>{related.excerpt}</p>
-              <button
-                className="blog-button"
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  navigate(`/blog/${related.slug}`);
-                }}
-              >
-                Читать
-              </button>
-            </article>
-          ))}
-        </div>
-      </aside>
-    </section>
-  );
-}
-
-function QuestionPage() {
+function QuestionPage({ navigate }) {
   const [questionForm, setQuestionForm] = useState({
     name: '',
     phone: '',
@@ -962,7 +857,16 @@ function QuestionPage() {
               checked={questionForm.consent}
               onChange={updateQuestion}
             />
-            Согласен на обработку персональных данных
+            <span>
+              Согласен с{' '}
+              <button className="text-link" type="button" onClick={() => navigate('/privacy')}>
+                политикой конфиденциальности
+              </button>{' '}
+              и{' '}
+              <button className="text-link" type="button" onClick={() => navigate('/consent')}>
+                обработкой персональных данных
+              </button>
+            </span>
           </label>
 
           <button className="primary-button full" type="submit">
@@ -1026,6 +930,7 @@ function ContactsPage({ navigate }) {
 function CheckoutPage({
   discount,
   form,
+  navigate,
   paymentMethod,
   selectedCourse,
   selectedCourseId,
@@ -1112,10 +1017,59 @@ function CheckoutPage({
             ))}
           </div>
 
-          <label className="consent">
-            <input type="checkbox" name="consent" checked={form.consent} onChange={updateForm} />
-            Принимаю оферту и согласие на обработку персональных данных
-          </label>
+          <div className="legal-consents">
+            <label className="consent">
+              <input
+                type="checkbox"
+                name="offerAccepted"
+                checked={form.offerAccepted}
+                onChange={updateForm}
+              />
+              <span>
+                Я принимаю условия{' '}
+                <button className="text-link" type="button" onClick={() => navigate('/terms')}>
+                  договора-оферты
+                </button>
+              </span>
+            </label>
+            <label className="consent">
+              <input
+                type="checkbox"
+                name="privacyAccepted"
+                checked={form.privacyAccepted}
+                onChange={updateForm}
+              />
+              <span>
+                Согласен с{' '}
+                <button className="text-link" type="button" onClick={() => navigate('/privacy')}>
+                  политикой конфиденциальности
+                </button>{' '}
+                и обработкой персональных данных
+              </span>
+            </label>
+            <label className="consent">
+              <input
+                type="checkbox"
+                name="personalDataAccepted"
+                checked={form.personalDataAccepted}
+                onChange={updateForm}
+              />
+              <span>
+                Подтверждаю ознакомление с{' '}
+                <button className="text-link" type="button" onClick={() => navigate('/consent')}>
+                  согласием на обработку персональных данных
+                </button>
+                ,{' '}
+                <button className="text-link" type="button" onClick={() => navigate('/consent-spread')}>
+                  согласием на распространение персональных данных
+                </button>{' '}
+                и{' '}
+                <button className="text-link" type="button" onClick={() => navigate('/consent-mailing')}>
+                  согласием на рекламные рассылки
+                </button>
+              </span>
+            </label>
+          </div>
 
           <button className="primary-button full" type="submit" disabled={status.type === 'loading'}>
             {status.type === 'loading' ? 'Создаём счёт...' : 'Оплатить формат'}
@@ -1131,7 +1085,9 @@ function CheckoutPage({
           <dl>
             <div>
               <dt>Стоимость</dt>
-              <dd>{formatPrice(selectedCourse.price)}</dd>
+              <dd>
+                <PriceView course={selectedCourse} />
+              </dd>
             </div>
             <div>
               <dt>Скидка</dt>
@@ -1155,6 +1111,238 @@ function CheckoutPage({
   );
 }
 
+function LegalPage({ type, navigate }) {
+  const siteUrl = typeof window === 'undefined' ? 'сайт Gold Pour' : window.location.origin;
+  const content = {
+    terms: {
+      eyebrow: 'документ',
+      title: 'Договор-оферта',
+      intro:
+        'Настоящий документ является публичным предложением Исполнителя заключить договор на участие в выбранном формате Gold Pour на условиях, размещённых на сайте.',
+      sections: [
+        {
+          title: '1. Общие положения',
+          paragraphs: [
+            'Оферта адресована физическим и юридическим лицам, которые оформляют заявку на сайте, через форму обратной связи, мессенджер или иной канал связи Исполнителя.',
+            'Акцептом Оферты считается оплата выбранного формата либо совершение действий, явно подтверждающих согласие с условиями документа.',
+          ],
+        },
+        {
+          title: '2. Предмет договора',
+          paragraphs: [
+            'Исполнитель организует очные встречи, мастер-классы, консультационные форматы и предоставляет видеоматериалы в объёме, указанном в карточке выбранного формата.',
+            'Заказчик оплачивает выбранный формат и предоставляет корректные контактные данные для связи, оформления заявки и отправки информации по участию.',
+          ],
+        },
+        {
+          title: '3. Стоимость и порядок оплаты',
+          paragraphs: [
+            'Стоимость указывается на сайте в рублях Российской Федерации. Оплата производится банковской картой, через СБП, по счёту или иным доступным способом.',
+            'Датой оплаты считается дата поступления денежных средств Исполнителю или подтверждения платежа платёжным провайдером.',
+          ],
+        },
+        {
+          title: '4. Переносы и возвраты',
+          paragraphs: [
+            'Условия переноса даты согласуются с менеджером. Если участник заранее сообщает о невозможности присутствовать, Исполнитель предлагает ближайший доступный вариант.',
+            'Возврат денежных средств производится в порядке, предусмотренном законодательством Российской Федерации и правилами платёжного провайдера.',
+          ],
+        },
+        {
+          title: '5. Права и обязанности сторон',
+          paragraphs: [
+            'Исполнитель вправе уточнять расписание, состав материалов и организационные детали, сохраняя общий смысл и объём выбранного формата.',
+            'Заказчик обязуется предоставить достоверные данные, своевременно оплатить участие и соблюдать правила площадки во время очных встреч.',
+          ],
+        },
+        {
+          title: '6. Ответственность',
+          paragraphs: [
+            'Стороны несут ответственность в соответствии с законодательством Российской Федерации. Исполнитель не отвечает за невозможность связи, вызванную ошибкой в данных Заказчика.',
+          ],
+        },
+        {
+          title: '7. Персональные данные',
+          paragraphs: [
+            'Обработка персональных данных осуществляется на условиях Политики конфиденциальности и согласий, размещённых на сайте.',
+          ],
+        },
+      ],
+    },
+    privacy: {
+      eyebrow: 'документ',
+      title: 'Политика конфиденциальности',
+      intro:
+        'Политика описывает, какие данные собираются на сайте, для каких целей они используются и как пользователь может отозвать согласие на обработку.',
+      sections: [
+        {
+          title: '1. Оператор персональных данных',
+          paragraphs: [
+            `${legalInfo.orgName}, ИНН ${legalInfo.inn}, ОГРНИП ${legalInfo.ogrnip}, является оператором персональных данных пользователей сайта ${siteUrl}.`,
+          ],
+        },
+        {
+          title: '2. Какие данные обрабатываются',
+          paragraphs: [
+            'Имя, телефон, электронная почта, выбранный формат, промокод, текст сообщения, сведения о согласиях, технические данные сайта и иная информация, которую пользователь указывает самостоятельно.',
+          ],
+        },
+        {
+          title: '3. Цели обработки',
+          paragraphs: [
+            'Приём заявок, связь с пользователем, организация участия, проведение оплаты, отправка чеков, выполнение требований закона, улучшение работы сайта и направление информационных сообщений при наличии согласия.',
+          ],
+        },
+        {
+          title: '4. Передача третьим лицам',
+          paragraphs: [
+            'Данные могут передаваться платёжным провайдерам, CRM-сервисам, сервисам рассылок, хостинг-провайдерам и иным подрядчикам только в объёме, необходимом для указанных целей.',
+          ],
+        },
+        {
+          title: '5. Срок обработки и отзыв',
+          paragraphs: [
+            'Данные обрабатываются до достижения целей обработки, истечения сроков хранения по закону или отзыва согласия пользователем.',
+            'Запрос на отзыв согласия направляется по контактам Оператора, указанным в настоящем документе.',
+          ],
+        },
+      ],
+    },
+    consent: {
+      eyebrow: 'согласие',
+      title: 'Согласие на обработку персональных данных',
+      intro:
+        'Пользователь, заполняя формы на сайте и нажимая кнопки отправки или оплаты, свободно, своей волей и в своём интересе даёт согласие Оператору на обработку персональных данных.',
+      sections: [
+        {
+          title: 'Перечень данных',
+          paragraphs: [
+            'Имя, телефон, электронная почта, выбранный формат, текст вопроса, сведения об оплате и иные данные, переданные пользователем через сайт или мессенджеры.',
+          ],
+        },
+        {
+          title: 'Действия с данными',
+          paragraphs: [
+            'Сбор, запись, систематизация, накопление, хранение, уточнение, использование, передача по поручению, обезличивание, блокирование, удаление и уничтожение.',
+          ],
+        },
+        {
+          title: 'Цель обработки',
+          paragraphs: [
+            'Заключение и исполнение договора, обработка заявки, связь с пользователем, организация участия, оплата и выполнение требований законодательства.',
+          ],
+        },
+        {
+          title: 'Срок действия',
+          paragraphs: [
+            'Согласие действует до достижения целей обработки или до его отзыва пользователем, если иные сроки не установлены законом.',
+          ],
+        },
+      ],
+    },
+    consentSpread: {
+      eyebrow: 'согласие',
+      title: 'Согласие на распространение персональных данных',
+      intro:
+        'Согласие применяется, если пользователь добровольно передаёт текстовый отзыв, фото, видео или иные материалы для публикации на сайте и в социальных сетях Оператора.',
+      sections: [
+        {
+          title: 'Разрешённые материалы',
+          paragraphs: [
+            'Имя, текст отзыва, фотография, видеоотзыв, сведения о выбранном формате и иные материалы, которые пользователь передал для публичного размещения.',
+          ],
+        },
+        {
+          title: 'Цель распространения',
+          paragraphs: [
+            'Публикация отзывов и материалов на сайте, в социальных сетях и рекламных материалах Оператора без выплаты дополнительного вознаграждения, если иное не согласовано отдельно.',
+          ],
+        },
+        {
+          title: 'Отзыв согласия',
+          paragraphs: [
+            'Пользователь вправе отозвать согласие, направив запрос по контактам Оператора. После получения запроса Оператор прекращает дальнейшее распространение в разумный срок.',
+          ],
+        },
+      ],
+    },
+    consentMailing: {
+      eyebrow: 'согласие',
+      title: 'Согласие на рекламные рассылки',
+      intro:
+        'Пользователь даёт согласие на получение информационных и рекламных сообщений от Оператора по телефону, электронной почте, в мессенджерах, социальных сетях и через push-уведомления.',
+      sections: [
+        {
+          title: 'Содержание рассылок',
+          paragraphs: [
+            'Сообщения о форматах, расписании, специальных предложениях, организационных изменениях, материалах Gold Pour и иных новостях, связанных с деятельностью Оператора.',
+          ],
+        },
+        {
+          title: 'Срок действия',
+          paragraphs: [
+            'Согласие действует до его отзыва пользователем. Отказаться от рассылки можно по ссылке в сообщении, через ответное обращение или по контактам Оператора.',
+          ],
+        },
+        {
+          title: 'Добровольность',
+          paragraphs: [
+            'Согласие является добровольным. Отказ от рекламных рассылок не ограничивает возможность оформить заявку или оплатить выбранный формат.',
+          ],
+        },
+      ],
+    },
+  }[type];
+
+  return (
+    <section className="page-shell legal-page">
+      <button className="back-button" type="button" onClick={() => navigate('/checkout')}>
+        <ArrowLeft size={18} /> Вернуться к оплате
+      </button>
+      <PageHero eyebrow={content.eyebrow} title={content.title} text={content.intro} />
+      <div className="legal-content">
+        {content.sections.map((section) => (
+          <section className="legal-section" key={section.title}>
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </section>
+        ))}
+        <section className="legal-section">
+          <h2>Реквизиты Оператора</h2>
+          <dl className="legal-requisites">
+            <div>
+              <dt>Название организации</dt>
+              <dd>{legalInfo.orgName}</dd>
+            </div>
+            <div>
+              <dt>ИНН</dt>
+              <dd>{legalInfo.inn}</dd>
+            </div>
+            <div>
+              <dt>ОГРН/ОГРНИП</dt>
+              <dd>{legalInfo.ogrnip}</dd>
+            </div>
+            <div>
+              <dt>Электронная почта</dt>
+              <dd>{legalInfo.email}</dd>
+            </div>
+            <div>
+              <dt>Телефон</dt>
+              <dd>{legalInfo.phone}</dd>
+            </div>
+            <div>
+              <dt>Адрес</dt>
+              <dd>{legalInfo.address}</dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </section>
+  );
+}
+
 function PageHero({ eyebrow, title, text }) {
   return (
     <div className="page-hero reveal-up">
@@ -1173,10 +1361,10 @@ function Footer({ navigate }) {
         <span>Мастер-классы по барному делу и сервису в Москве</span>
       </div>
       <div className="footer-links">
-        <button type="button" onClick={() => navigate('/checkout')}>
+        <button type="button" onClick={() => navigate('/terms')}>
           Публичная оферта
         </button>
-        <button type="button" onClick={() => navigate('/checkout')}>
+        <button type="button" onClick={() => navigate('/privacy')}>
           Политика конфиденциальности
         </button>
         <button type="button" onClick={() => navigate('/contacts')}>
