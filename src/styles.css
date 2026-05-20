@@ -1079,8 +1079,8 @@ section {
 
 .payment-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
+  gap: 1.25rem;
   align-items: start;
 }
 
@@ -1091,7 +1091,7 @@ section {
 
 .checkout-form {
   display: grid;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 label {
@@ -1168,23 +1168,23 @@ select {
   grid-template-columns: auto 1fr;
   align-items: start;
   color: rgba(249, 250, 251, 0.72);
-  font-size: clamp(1rem, 1.8vw, 1.35rem);
-  line-height: 1.45;
+  font-size: 0.98rem;
+  line-height: 1.38;
 }
 
 .consent input {
-  width: 1.35rem;
-  min-height: 1.35rem;
-  margin-top: 0.12rem;
+  width: 1.05rem;
+  min-height: 1.05rem;
+  margin-top: 0.16rem;
   accent-color: var(--gold);
 }
 
 .legal-consents {
   display: grid;
-  gap: 1rem;
+  gap: 0.72rem;
   border: 1px solid rgba(212, 175, 55, 0.28);
   background: rgba(245, 230, 200, 0.035);
-  padding: 1.15rem;
+  padding: 0.9rem;
 }
 
 .text-link {
@@ -1274,29 +1274,48 @@ select {
   max-width: 78rem;
 }
 
-.legal-content {
+.legal-content,
+.legal-document {
   display: grid;
   gap: 1rem;
 }
 
-.legal-section {
+.legal-section,
+.legal-document {
   border: 1px solid rgba(245, 230, 200, 0.14);
   background: rgba(31, 41, 55, 0.42);
   padding: clamp(1.2rem, 3vw, 2rem);
 }
 
-.legal-section h2 {
+.legal-section h2,
+.legal-document h2 {
   margin-bottom: 0.9rem;
   color: var(--gold);
   font-size: clamp(1.7rem, 3vw, 2.6rem);
   line-height: 1.08;
 }
 
-.legal-section p {
-  margin: 0.85rem 0 0;
+.legal-document h3 {
+  margin: 0.7rem 0 0.2rem;
+  color: var(--champagne);
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  line-height: 1.2;
+}
+
+.legal-section p,
+.legal-document p {
+  margin: 0;
   color: rgba(249, 250, 251, 0.76);
   font-size: 1.02rem;
   line-height: 1.75;
+}
+
+.legal-list-line {
+  padding-left: 1rem;
+}
+
+.legal-gap {
+  height: 0.35rem;
 }
 
 .legal-requisites {
