@@ -19,6 +19,13 @@ npm install
 npm run dev
 ```
 
+Для проверки полной связки с серверной частью:
+
+```bash
+npm run build
+npm run server
+```
+
 Для публикации на хостинге с прямыми ссылками вида `/courses/pro` нужен fallback на `index.html`.
 
 ## Cloudflare Pages
@@ -35,18 +42,42 @@ Root directory: /
 
 ## Оплата
 
-По умолчанию форма создаёт демо-счёт в браузере. Для реального провайдера добавьте `.env`:
+Проект подготовлен к интернет-эквайрингу Т-Банка. Фронтенд отправляет заказ на `/api/payments/create`, сервер создаёт платёж через метод `Init` и возвращает ссылку `PaymentURL`.
 
 ```bash
-VITE_PAYMENT_ENDPOINT=https://your-backend.example.com/api/payments/create
+VITE_PAYMENT_ENDPOINT=/api/payments/create
+PORT=8787
+PUBLIC_APP_URL=https://gold-pour.ru
+TBANK_API_URL=https://securepay.tinkoff.ru/v2
+TBANK_TERMINAL_KEY=
+TBANK_PASSWORD=
+TBANK_NOTIFICATION_URL=https://gold-pour.ru/api/payments/tbank/webhook
+TBANK_SUCCESS_URL=https://gold-pour.ru/payment/success
+TBANK_FAIL_URL=https://gold-pour.ru/payment/fail
+TBANK_SEND_RECEIPT=false
+TBANK_TAXATION=usn_income
+TBANK_VAT=none
+TBANK_PAYMENT_METHOD=full_prepayment
+TBANK_PAYMENT_OBJECT=service
+
+ATOL_ENABLED=true
+ATOL_API_URL=https://online.atol.ru/possystem/v4
+ATOL_INN=590850694160
+ATOL_GROUP_CODE=
+ATOL_LOGIN=
+ATOL_PASSWORD=
+ATOL_COMPANY_EMAIL=
+ATOL_PAYMENT_ADDRESS=https://gold-pour.ru
+ATOL_CALLBACK_URL=https://gold-pour.ru/api/receipts/atol/callback
+ATOL_TAXATION=usn_income
+ATOL_VAT=none
+ATOL_PAYMENT_METHOD=full_prepayment
+ATOL_PAYMENT_OBJECT=service
+ATOL_MEASUREMENT_UNIT=шт.
 ```
 
-`VITE_PAYMENT_ENDPOINT` должен принимать `POST` с заказом и возвращать JSON с одним из полей:
+Чеки отправляются напрямую в АТОЛ Онлайн после успешного webhook от Т-Банка. Чтобы не пробивать двойной чек, `TBANK_SEND_RECEIPT` должен оставаться `false`.
 
-```json
-{
-  "confirmation_url": "https://payment-provider.example/checkout/..."
-}
-```
+Секретные значения `TBANK_TERMINAL_KEY`, `TBANK_PASSWORD`, `ATOL_LOGIN` и `ATOL_PASSWORD` нельзя добавлять во фронтенд или коммитить в Git.
 
-Также поддерживаются поля `payment_url`, `redirectUrl` и `url`.
+На сервере Node-приложение нужно держать запущенным отдельно от nginx, а `/api/` проксировать на порт `8787`.

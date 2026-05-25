@@ -1164,6 +1164,29 @@ select {
   background: var(--gold);
 }
 
+.installment-button {
+  display: inline-flex;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(212, 175, 55, 0.72);
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.08);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.installment-button:hover {
+  border-color: var(--champagne);
+  color: var(--champagne);
+  background: rgba(245, 230, 200, 0.08);
+}
+
 .consent {
   grid-template-columns: auto 1fr;
   align-items: start;
@@ -1230,6 +1253,56 @@ select {
   top: 6rem;
   color: var(--black);
   background: var(--champagne);
+}
+
+.payment-result-page {
+  min-height: 68vh;
+  display: grid;
+  align-items: center;
+}
+
+.payment-result {
+  width: min(46rem, 100%);
+  border: 1px solid rgba(212, 175, 55, 0.36);
+  background: rgba(31, 41, 55, 0.72);
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.28);
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+.payment-result h1 {
+  color: var(--champagne);
+  font-size: clamp(2.2rem, 6vw, 5.2rem);
+  line-height: 0.95;
+  margin: 0.55rem 0 1rem;
+}
+
+.payment-result p {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  line-height: 1.7;
+}
+
+.result-icon {
+  display: inline-grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+  border: 1px solid rgba(212, 175, 55, 0.48);
+  color: var(--gold);
+  background: rgba(245, 230, 200, 0.06);
+}
+
+.payment-result.error .result-icon {
+  color: #f3b0a9;
+  border-color: rgba(243, 176, 169, 0.48);
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
 }
 
 .order-summary h3 {
@@ -1416,8 +1489,11 @@ select {
   padding: 1.25rem;
 }
 
-.contact-card a {
+.contact-card a,
+.contact-card span {
   min-height: 3rem;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(245, 230, 200, 0.1);
   color: var(--champagne);

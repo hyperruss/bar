@@ -15,8 +15,11 @@ import {
 } from 'lucide-react';
 import { legalTexts } from './legalTexts';
 
-const accountUrl = 'https://app.barmenschool.site/login';
-const paymentEndpoint = import.meta.env.VITE_PAYMENT_ENDPOINT || '';
+const accountUrl = 'https://barmenschool.site';
+const paymentEndpoint = import.meta.env.VITE_PAYMENT_ENDPOINT || '/api/payments/create';
+const installmentLinks = {
+  start: 'https://portal.simpleloan.ru/_sl/AgBUrVrJ6hdCjec7DMAnQb/',
+};
 
 const courses = [
   {
@@ -24,7 +27,7 @@ const courses = [
     title: 'Барный старт',
     badge: 'Первый формат',
     oldPrice: 49990,
-    price: 39990,
+    price: 34990,
     duration: '5 очных мастер классов',
     lessons: 'очные встречи + видеоматериалы',
     description:
@@ -163,6 +166,149 @@ const navItems = [
   ['Контакты', '/contacts'],
 ];
 
+const siteUrl = 'https://gold-pour.ru';
+const defaultSeo = {
+  title: 'Gold Pour — мастер-классы по барному делу',
+  description:
+    'Gold Pour — очные мастер-классы по барному делу, миксологии, бариста-направлению и сервису. Запись, оплата картой и рассрочка онлайн.',
+};
+const seoByPage = {
+  home: defaultSeo,
+  courses: {
+    title: 'Мастер-классы Gold Pour — бар, миксология и сервис',
+    description:
+      'Выберите формат Gold Pour: барный старт, миксология PRO, сервис HoReCa или официант. Очные встречи, видеоматериалы, онлайн-оплата и рассрочка.',
+  },
+  club: {
+    title: 'О клубе Gold Pour — барная практика и HoReCa',
+    description:
+      'Gold Pour объединяет практические форматы для бара, кофе и сервиса: разбор стойки, вкуса, подачи и работы с гостями.',
+  },
+  reviews: {
+    title: 'Отзывы участников Gold Pour',
+    description:
+      'Отзывы участников о форматах Gold Pour: барная стойка, миксология, сервис, работа с меню и гостями.',
+  },
+  contacts: {
+    title: 'Контакты Gold Pour',
+    description:
+      'Контакты Gold Pour: ИП Голева Диана Александровна, ИНН 590850694160, ОГРНИП 324595800127571.',
+  },
+  question: {
+    title: 'Задать вопрос Gold Pour',
+    description:
+      'Задайте вопрос по формату, расписанию, оплате или корпоративной встрече Gold Pour.',
+  },
+  checkout: {
+    title: 'Запись и оплата Gold Pour',
+    description:
+      'Запишитесь на формат Gold Pour, оплатите картой через Т-Банк или оформите рассрочку для Барного старта.',
+  },
+  terms: {
+    title: 'Публичная оферта Gold Pour',
+    description: 'Публичная оферта ИП Голева Диана Александровна для услуг Gold Pour.',
+  },
+  privacy: {
+    title: 'Политика конфиденциальности Gold Pour',
+    description: 'Политика конфиденциальности и обработки персональных данных Gold Pour.',
+  },
+  consent: {
+    title: 'Согласие на обработку персональных данных Gold Pour',
+    description: 'Согласие на обработку персональных данных для форм Gold Pour.',
+  },
+  consentSpread: {
+    title: 'Согласие на распространение персональных данных Gold Pour',
+    description: 'Согласие на распространение персональных данных для отзывов Gold Pour.',
+  },
+  consentMailing: {
+    title: 'Согласие на рассылки Gold Pour',
+    description: 'Согласие на получение информационных и рекламных сообщений Gold Pour.',
+  },
+  paymentSuccess: {
+    title: 'Оплата прошла — Gold Pour',
+    description: 'Страница успешной оплаты Gold Pour.',
+  },
+  paymentFail: {
+    title: 'Оплата не прошла — Gold Pour',
+    description: 'Страница неуспешной оплаты Gold Pour.',
+  },
+  paymentPending: {
+    title: 'Платёж обрабатывается — Gold Pour',
+    description: 'Страница обработки платежа Gold Pour.',
+  },
+};
+
+function ensureMeta(selector, createElement) {
+  let element = document.head.querySelector(selector);
+
+  if (!element) {
+    element = createElement();
+    document.head.appendChild(element);
+  }
+
+  return element;
+}
+
+function setMeta(selector, content, createElement) {
+  const element = ensureMeta(selector, createElement);
+  element.setAttribute('content', content);
+}
+
+function updatePageSeo(route, activeCourse) {
+  const courseSeo =
+    route.page === 'course' && activeCourse
+      ? {
+          title: `${activeCourse.title} — Gold Pour`,
+          description: `${activeCourse.description} Стоимость: ${formatPrice(activeCourse.price)}.`,
+        }
+      : null;
+  const seo = courseSeo || seoByPage[route.page] || defaultSeo;
+  const canonicalPath = route.path || '/';
+  const canonicalUrl = `${siteUrl}${canonicalPath === '/' ? '/' : canonicalPath}`;
+
+  document.title = seo.title;
+  setMeta('meta[name="description"]', seo.description, () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('name', 'description');
+    return meta;
+  });
+  setMeta('meta[name="robots"]', 'index, follow', () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('name', 'robots');
+    return meta;
+  });
+  ensureMeta('link[rel="canonical"]', () => {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'canonical');
+    return link;
+  }).setAttribute('href', canonicalUrl);
+  setMeta('meta[property="og:title"]', seo.title, () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('property', 'og:title');
+    return meta;
+  });
+  setMeta('meta[property="og:description"]', seo.description, () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('property', 'og:description');
+    return meta;
+  });
+  setMeta('meta[property="og:url"]', canonicalUrl, () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('property', 'og:url');
+    return meta;
+  });
+  setMeta('meta[name="twitter:title"]', seo.title, () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('name', 'twitter:title');
+    return meta;
+  });
+  setMeta('meta[name="twitter:description"]', seo.description, () => {
+    const meta = document.createElement('meta');
+    meta.setAttribute('name', 'twitter:description');
+    return meta;
+  });
+}
+
 function formatPrice(value) {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
@@ -201,6 +347,9 @@ function getRoute() {
     '/consent': 'consent',
     '/consent-spread': 'consentSpread',
     '/consent-mailing': 'consentMailing',
+    '/payment/success': 'paymentSuccess',
+    '/payment/fail': 'paymentFail',
+    '/payment/pending': 'paymentPending',
   };
 
   return { page: pageByPath[path] || 'home', path };
@@ -244,6 +393,10 @@ function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [route.path]);
+
+  useEffect(() => {
+    updatePageSeo(route, activeCourse);
+  }, [route, activeCourse]);
 
   const navigate = (path) => {
     window.history.pushState({}, '', path);
@@ -290,52 +443,47 @@ function App() {
         phone: form.phone,
         email: form.email,
       },
+      promo: form.promo,
       paymentMethod,
       returnUrl: window.location.href,
     };
 
     setStatus({ type: 'loading', message: 'Создаём счёт на оплату...' });
 
-    if (paymentEndpoint) {
-      try {
-        const response = await fetch(paymentEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(order),
-        });
+    try {
+      const response = await fetch(paymentEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order),
+      });
 
-        if (!response.ok) {
-          throw new Error('payment endpoint failed');
-        }
+      const payload = await response.json().catch(() => ({}));
 
-        const payload = await response.json();
-        const redirectUrl =
-          payload.confirmation_url || payload.payment_url || payload.redirectUrl || payload.url;
-
-        if (redirectUrl) {
-          window.location.assign(redirectUrl);
-          return;
-        }
-
-        setStatus({
-          type: 'success',
-          message: 'Счёт создан. Проверьте ответ сервера: ссылка оплаты не была передана.',
-        });
-      } catch (error) {
-        setStatus({
-          type: 'error',
-          message: 'Не удалось создать платёж. Проверьте серверный адрес и ключи провайдера.',
-        });
+      if (!response.ok) {
+        throw new Error(payload.error || 'payment endpoint failed');
       }
-      return;
-    }
 
-    const demoOrder = `GP-${Date.now().toString().slice(-6)}`;
-    window.localStorage.setItem('goldPourLastOrder', JSON.stringify({ ...order, demoOrder }));
-    setStatus({
-      type: 'success',
-      message: `Демо-счёт ${demoOrder} создан. Для реальной оплаты подключите VITE_PAYMENT_ENDPOINT.`,
-    });
+      const redirectUrl =
+        payload.confirmation_url || payload.payment_url || payload.redirectUrl || payload.url;
+
+      if (redirectUrl) {
+        window.location.assign(redirectUrl);
+        return;
+      }
+
+      setStatus({
+        type: 'success',
+        message: 'Счёт создан. Проверьте ответ сервера: ссылка оплаты не была передана.',
+      });
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Не удалось создать платёж. Проверьте серверный адрес и ключи Т-Банка.',
+      });
+    }
   };
 
   return (
@@ -378,6 +526,30 @@ function App() {
         {route.page === 'consent' && <LegalPage type="consent" navigate={navigate} />}
         {route.page === 'consentSpread' && <LegalPage type="consentSpread" navigate={navigate} />}
         {route.page === 'consentMailing' && <LegalPage type="consentMailing" navigate={navigate} />}
+        {route.page === 'paymentSuccess' && (
+          <PaymentResultPage
+            navigate={navigate}
+            type="success"
+            title="Оплата прошла"
+            text="Спасибо. Платёж принят, мы свяжемся с вами и отправим детали участия."
+          />
+        )}
+        {route.page === 'paymentFail' && (
+          <PaymentResultPage
+            navigate={navigate}
+            type="error"
+            title="Оплата не прошла"
+            text="Платёж был отменён или отклонён. Можно вернуться к форме и попробовать ещё раз."
+          />
+        )}
+        {route.page === 'paymentPending' && (
+          <PaymentResultPage
+            navigate={navigate}
+            type="pending"
+            title="Платёж обрабатывается"
+            text="Банк ещё уточняет статус операции. Если деньги списались, не создавайте повторную оплату сразу."
+          />
+        )}
       </main>
 
       <Footer navigate={navigate} />
@@ -803,7 +975,7 @@ function QuestionPage({ navigate }) {
                 name="phone"
                 value={questionForm.phone}
                 onChange={updateQuestion}
-                placeholder="+7 999 000-00-00"
+                placeholder="Ваш телефон"
               />
             </label>
           </div>
@@ -814,7 +986,7 @@ function QuestionPage({ navigate }) {
               name="email"
               value={questionForm.email}
               onChange={updateQuestion}
-              placeholder="mail@example.com"
+              placeholder="Ваш email"
               type="email"
             />
           </label>
@@ -878,12 +1050,12 @@ function QuestionPage({ navigate }) {
           </p>
           <dl>
             <div>
-              <dt>Телефон</dt>
-              <dd>+7 999 000-00-00</dd>
+              <dt>Официальный сайт</dt>
+              <dd>gold-pour.ru</dd>
             </div>
             <div>
-              <dt>Электронная почта</dt>
-              <dd>hello@goldpour.ru</dd>
+              <dt>Почта уведомлений</dt>
+              <dd>noreply@barmenschool.site</dd>
             </div>
           </dl>
         </aside>
@@ -902,17 +1074,17 @@ function ContactsPage({ navigate }) {
       />
       <div className="contacts contacts-page">
         <div>
-          <h2>Москва, барная лаборатория Gold Pour</h2>
-          <p>Ежедневно с 10:00 до 21:00. Адрес и реквизиты можно заменить на ваши реальные данные.</p>
+          <h2>ИП Голева Диана Александровна</h2>
+          <p>Официальный сайт проекта: gold-pour.ru. Доступ к платформе для формата «бармен-профессионал» предоставляется через barmenschool.site.</p>
           <button className="primary-button" type="button" onClick={() => navigate('/checkout')}>
             Записаться
           </button>
         </div>
         <div className="contact-card">
-          <a href="tel:+79990000000">+7 999 000-00-00</a>
-          <a href="mailto:hello@goldpour.ru">hello@goldpour.ru</a>
-          <a href="https://t.me/" target="_blank" rel="noreferrer">
-            <MessageCircle size={18} /> Telegram
+          <span>ИНН 590850694160</span>
+          <span>ОГРНИП 324595800127571</span>
+          <a href="https://barmenschool.site" target="_blank" rel="noreferrer">
+            <MessageCircle size={18} /> Платформа
           </a>
         </div>
       </div>
@@ -939,7 +1111,7 @@ function CheckoutPage({
       <PageHero
         eyebrow="оплата"
         title="Запись и оплата"
-        text="Интерфейс готов под интеграцию с YooKassa, CloudPayments, Robokassa или вашим сервером."
+        text="Форма подготовлена к оплате через интернет-эквайринг Т-Банка: после отправки заявки откроется защищённая платёжная страница банка."
       />
 
       <div className="payment-layout">
@@ -972,7 +1144,7 @@ function CheckoutPage({
                 name="phone"
                 value={form.phone}
                 onChange={updateForm}
-                placeholder="+7 999 000-00-00"
+                placeholder="Ваш телефон"
               />
             </label>
           </div>
@@ -983,7 +1155,7 @@ function CheckoutPage({
               name="email"
               value={form.email}
               onChange={updateForm}
-              placeholder="mail@example.com"
+              placeholder="Ваш email"
               type="email"
             />
           </label>
@@ -997,7 +1169,7 @@ function CheckoutPage({
             {[
               ['card', CreditCard, 'Карта'],
               ['sbp', ShieldCheck, 'СБП'],
-              ['invoice', BriefcaseBusiness, 'Счёт'],
+              ['tpay', BriefcaseBusiness, 'T-Pay'],
             ].map(([id, Icon, label]) => (
               <button
                 className={paymentMethod === id ? 'is-active' : ''}
@@ -1068,6 +1240,17 @@ function CheckoutPage({
             {status.type === 'loading' ? 'Создаём счёт...' : 'Оплатить формат'}
           </button>
 
+          {installmentLinks[selectedCourse.id] && (
+            <a
+              className="installment-button full"
+              href={installmentLinks[selectedCourse.id]}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Оплатить в рассрочку
+            </a>
+          )}
+
           {status.message && <p className={`status ${status.type}`}>{status.message}</p>}
         </form>
 
@@ -1099,6 +1282,31 @@ function CheckoutPage({
             </span>
           </div>
         </aside>
+      </div>
+    </section>
+  );
+}
+
+function PaymentResultPage({ navigate, type, title, text }) {
+  const Icon = type === 'success' ? Check : type === 'error' ? X : ShieldCheck;
+
+  return (
+    <section className="page-shell compact-page payment-result-page">
+      <div className={`payment-result ${type}`}>
+        <span className="result-icon">
+          <Icon size={30} />
+        </span>
+        <span className="eyebrow">статус оплаты</span>
+        <h1>{title}</h1>
+        <p>{text}</p>
+        <div className="result-actions">
+          <button className="primary-button" type="button" onClick={() => navigate('/checkout')}>
+            Вернуться к оплате
+          </button>
+          <button className="secondary-button" type="button" onClick={() => navigate('/contacts')}>
+            Контакты
+          </button>
+        </div>
       </div>
     </section>
   );
