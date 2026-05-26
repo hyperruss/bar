@@ -50,13 +50,13 @@ jobs:
             --exclude "node_modules/" \
             --exclude "dist/" \
             --exclude "server/storage/" \
-            --exclude "assets/" \
-            --exclude "images/" \
-            --exclude "index.html" \
-            --exclude "_redirects" \
-            --exclude "favicon.png" \
-            --exclude "robots.txt" \
-            --exclude "sitemap.xml" \
+            --exclude "/assets/" \
+            --exclude "/images/" \
+            --exclude "/index.html" \
+            --exclude "/_redirects" \
+            --exclude "/favicon.png" \
+            --exclude "/robots.txt" \
+            --exclude "/sitemap.xml" \
             ./ "$SERVER_USER@$SERVER_HOST:$SERVER_PATH/"
 
       - name: Install, build and restart
