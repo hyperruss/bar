@@ -161,9 +161,9 @@ const imageUrls = {
 const navItems = [
   ['Главная', '/'],
   ['Мастер-классы', '/courses'],
-  ['О клубе', '/club'],
-  ['Отзывы', '/reviews'],
-  ['Контакты', '/contacts'],
+  ['О клубе', '/reviews'],
+  ['Отзывы', '/club'],
+  ['Контакты', ''],
 ];
 
 const siteUrl = 'https://gold-pour.ru';
@@ -930,7 +930,7 @@ function QuestionPage({ navigate }) {
     message: '',
     consent: true,
   });
-  const [questionStatus, setQuestionStatus] = useState('');
+  const questionStatus = 'Заполните имя, телефон, вопрос и подтвердите согласие.';
 
   const updateQuestion = (event) => {
     const { name, value, type, checked } = event.target;
@@ -939,19 +939,6 @@ function QuestionPage({ navigate }) {
 
   const submitQuestion = (event) => {
     event.preventDefault();
-
-    if (!questionForm.name || !questionForm.phone || !questionForm.message || !questionForm.consent) {
-      setQuestionStatus('Заполните имя, телефон, вопрос и подтвердите согласие.');
-      return;
-    }
-
-    const requestId = `Q-${Date.now().toString().slice(-6)}`;
-    window.localStorage.setItem(
-      'goldPourLastQuestion',
-      JSON.stringify({ ...questionForm, requestId }),
-    );
-    setQuestionStatus(`Вопрос ${requestId} сохранён. Менеджер свяжется с вами после подключения CRM.`);
-    setQuestionForm((current) => ({ ...current, message: '' }));
   };
 
   return (
